@@ -16,6 +16,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.capstone.data.model.Appointment
+import com.example.capstone.data.model.User
 import com.example.capstone.data.viewmodel.DACViewModel
 import com.example.capstone.screens.Screens
 import com.example.capstone.screens.user.Login
@@ -23,6 +25,8 @@ import com.example.capstone.screens.user.MyAppointments
 import com.example.capstone.screens.user.Register
 import com.example.capstone.ui.theme.CapstoneTheme
 import com.example.capstone.ui.theme.LightBlueBackground
+import java.sql.Time
+import java.util.Date
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +63,27 @@ private fun DACNavHost(
             Register(navController, viewModel)
         }
         composable(route = Screens.MyAppointments.route) {
-            MyAppointments(navController, viewModel)
+            MyAppointments(navController, viewModel, generateDummyAppointments())
         }
     }
+}
+
+// dummy data generated for testing NOTE TO SELF: DELETE LATER
+fun generateDummyAppointments(): List<Appointment> {
+    return listOf(
+        Appointment(
+            userID = 1,
+            date = Date(2024 - 1900, 9, 13),
+            time = Time(12, 0, 0),
+            location = "Amsterdam Hospital",
+            doctor = "Dr. John Doe"
+        ),
+        Appointment(
+            userID = 2,
+            date = Date(2024 - 1900, 10, 14),
+            time = Time(15, 30, 0),
+            location = "Utrecht Clinics",
+            doctor = "Dr. Jane Smith"
+        )
+    )
 }

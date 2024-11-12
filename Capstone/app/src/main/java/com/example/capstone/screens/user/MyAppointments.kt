@@ -10,9 +10,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -28,13 +28,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.capstone.R
+import com.example.capstone.data.model.Appointment
+import com.example.capstone.data.utils.Utils.Companion.dateFormatter
+import com.example.capstone.data.utils.Utils.Companion.timeFormatter
 import com.example.capstone.data.viewmodel.DACViewModel
 import com.example.capstone.ui.theme.ContainerGray
 
 @Composable
 fun MyAppointments(
     navController: NavHostController,
-    viewmodel: DACViewModel
+    viewmodel: DACViewModel,
+    appointments: List<Appointment>
 ) {
     Box(
         modifier = Modifier
@@ -52,85 +56,96 @@ fun MyAppointments(
         )
 
         // appointment list NOTE TO SELF: CHANGE COLUMN TO LAZYCOLUMN WHEN DATA IS ADDED
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .padding(top = 70.dp)
+                .height(620.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            Column(
-                modifier = Modifier
-                    .background(
-                        color = Color.White,
-                        shape = RoundedCornerShape(20.dp)
-                    )
-                    .width(350.dp)
-                    .padding(35.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            items(appointments) { appointment ->
+                val formattedDate = dateFormatter.format(appointment.date)
+                val formattedTime = timeFormatter.format(appointment.time)
+
                 Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                    modifier = Modifier
+                        .background(
+                            color = Color.White,
+                            shape = RoundedCornerShape(20.dp)
+                        )
+                        .width(350.dp)
+                        .padding(35.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Row {
-                        Text(text = "13/10/2024", fontSize = 22.sp, fontWeight = FontWeight.Medium)
-                        Text(text = " - ", fontSize = 22.sp, fontWeight = FontWeight.Medium)
-                        Text(text = "12:00", fontSize = 22.sp, fontWeight = FontWeight.Medium)
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        Row {
+                            Text(
+                                text = formattedDate,
+                                fontSize = 22.sp,
+                                fontWeight = FontWeight.Medium
+                            )
+                            Text(text = " - ", fontSize = 22.sp, fontWeight = FontWeight.Medium)
+                            Text(text = formattedTime, fontSize = 22.sp, fontWeight = FontWeight.Medium)
+                        }
+                        Text(text = "Location:", fontSize = 20.sp, fontWeight = FontWeight.Medium)
+                        Text(text = appointment.location)
+                        Text(text = "Doctor: ", fontSize = 20.sp, fontWeight = FontWeight.Medium)
+                        Text(text = appointment.doctor, modifier = Modifier.padding(bottom = 35.dp))
                     }
-                    Text(text = "Location:", fontSize = 20.sp, fontWeight = FontWeight.Medium)
-                    Text(text = "Amsterdam Hospital")
-                    Text(text = "Doctor: ", fontSize = 20.sp, fontWeight = FontWeight.Medium)
-                    Text(text = "Dr. John Doe", modifier = Modifier.padding(bottom = 35.dp))
-                }
 
-                // change time of appointment
-                Button(
-                    onClick = {
-                        /*TODO*/
-                    },
-                    modifier = Modifier
-                        .width(180.dp)
-                        .height(80.dp)
-                        .padding(bottom = 30.dp),
-                    shape = RoundedCornerShape(20),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = ContainerGray,
-                        contentColor = Color.Black
-                    )
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.timeslot_24dp),
-                        contentDescription = stringResource(id = R.string.change_timeslot),
-                        modifier = Modifier.padding(end = 15.dp),
-                    )
-                    Text(
-                        text = stringResource(id = R.string.change_timeslot), fontSize = 16.sp,
-                        textAlign = TextAlign.Center
-                    )
-                }
+                    // change time of appointment
+                    Button(
+                        onClick = {
+                            /*TODO*/
+                        },
+                        modifier = Modifier
+                            .width(180.dp)
+                            .height(80.dp)
+                            .padding(bottom = 20.dp),
+                        shape = RoundedCornerShape(20),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = ContainerGray,
+                            contentColor = Color.Black
+                        )
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.timeslot_24dp),
+                            contentDescription = stringResource(id = R.string.change_timeslot),
+                            modifier = Modifier.padding(end = 15.dp),
+                        )
+                        Text(
+                            text = stringResource(id = R.string.change_timeslot), fontSize = 16.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    }
 
-                // cancel appointment button
-                Button(
-                    onClick = {
-                        /*TODO*/
-                    },
-                    modifier = Modifier
-                        .width(180.dp),
-                    shape = RoundedCornerShape(20),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = ContainerGray,
-                        contentColor = Color.Black
-                    )
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.cancel_24dp),
-                        contentDescription = stringResource(id = R.string.cancel_appointment),
-                        modifier = Modifier.padding(end = 15.dp),
-                    )
-                    Text(
-                        text = stringResource(id = R.string.cancel_appointment),
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.Center
-                    )
+                    // cancel appointment button
+                    Button(
+                        onClick = {
+                            /*TODO*/
+                        },
+                        modifier = Modifier
+                            .width(180.dp),
+                        shape = RoundedCornerShape(20),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = ContainerGray,
+                            contentColor = Color.Black
+                        )
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.cancel_24dp),
+                            contentDescription = stringResource(id = R.string.cancel_appointment),
+                            modifier = Modifier.padding(end = 15.dp),
+                        )
+                        Text(
+                            text = stringResource(id = R.string.cancel_appointment),
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
         }
