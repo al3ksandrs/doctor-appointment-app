@@ -22,6 +22,7 @@ import com.example.capstone.screens.user.Login
 import com.example.capstone.screens.user.MyAppointments
 import com.example.capstone.screens.user.Register
 import com.example.capstone.ui.theme.CapstoneTheme
+import com.example.capstone.ui.theme.LightBlueBackground
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +32,7 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = LightBlueBackground
                 ) {
                     DACNavHost(navController = rememberNavController(), modifier = Modifier)
                 }

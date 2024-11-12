@@ -4,8 +4,13 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">Log In</string>
+    <string name="logout">Log out</string>
     <string name="register">Register</string>
     <string name="healthcare_providers">Healthcare providers</string>
     <string name="email">Email</string>
     <string name="phone_number">Phone number</string>
+    <string name="my_appointments">My Appointments</string>
+    <string name="new_appointment">New appointment</string>
+    <string name="cancel_appointment">Cancel appointment</string>
+    <string name="change_timeslot">Change time</string>
 </resources>
