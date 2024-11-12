@@ -20,6 +20,8 @@ import com.example.capstone.data.model.Appointment
 import com.example.capstone.data.model.User
 import com.example.capstone.data.viewmodel.DACViewModel
 import com.example.capstone.screens.Screens
+import com.example.capstone.screens.user.CancelAppointment
+import com.example.capstone.screens.user.ChangeTimeslot
 import com.example.capstone.screens.user.Login
 import com.example.capstone.screens.user.MyAppointments
 import com.example.capstone.screens.user.Register
@@ -64,6 +66,14 @@ private fun DACNavHost(
         }
         composable(route = Screens.MyAppointments.route) {
             MyAppointments(navController, viewModel, generateDummyAppointments())
+        }
+        composable(route = Screens.ChangeTimeslot.route) {
+            ChangeTimeslot(navController, viewModel)
+        }
+        composable(route = "cancelAppointment/{appointmentID}") { backStackEntry ->
+            val appointmentID = backStackEntry.arguments?.getString("appointmentID")?.toInt()
+            // TODO: get appointment through viewmodel and pass it to the cancellation screen
+            CancelAppointment(navController, generateDummyAppointments()[1], viewModel)
         }
     }
 }

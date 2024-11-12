@@ -99,7 +99,7 @@ fun MyAppointments(
                     // change time of appointment
                     Button(
                         onClick = {
-                            /*TODO*/
+                            navController.navigate("changeTimeslot")
                         },
                         modifier = Modifier
                             .width(180.dp)
@@ -125,7 +125,7 @@ fun MyAppointments(
                     // cancel appointment button
                     Button(
                         onClick = {
-                            /*TODO*/
+                            navController.navigate("cancelAppointment/${appointment.id}")
                         },
                         modifier = Modifier
                             .width(180.dp),
@@ -183,7 +183,7 @@ fun MyAppointments(
             // logout button
             Button(
                 onClick = {
-                    /*TODO*/
+                   navController.navigate("login")
                 },
                 modifier = Modifier
                     .width(180.dp)

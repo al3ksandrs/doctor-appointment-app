@@ -8,6 +8,9 @@
     <string name="register">Register</string>
     <string name="healthcare_providers">Healthcare providers</string>
     <string name="email">Email</string>
+    <string name="placeholder">Placeholder</string>
+    <string name="yes_cancel">Yes, cancel</string>
+    <string name="no_go_back">No, go back</string>
     <string name="phone_number">Phone number</string>
     <string name="my_appointments">My Appointments</string>
     <string name="new_appointment">New appointment</string>
