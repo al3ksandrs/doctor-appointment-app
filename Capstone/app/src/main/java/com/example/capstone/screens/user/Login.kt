@@ -1,5 +1,6 @@
 package com.example.capstone.screens.user
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -7,11 +8,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -23,6 +26,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -31,6 +36,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.capstone.R
 import com.example.capstone.data.viewmodel.DACViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,11 +57,12 @@ fun Login(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            Text(
-                modifier = Modifier.padding(bottom = 90.dp),
-                text = "DAC",
-                fontSize = 90.sp,
-                fontWeight = FontWeight.Bold
+            Image(
+                painter = painterResource(id = R.drawable.doctor_app_logo),
+                contentDescription = "Logo",
+                modifier = Modifier
+                    .size(270.dp)
+                    .padding(bottom = 90.dp),
             )
 
             TextField(
@@ -64,12 +71,14 @@ fun Login(
                 onValueChange = {
                     username = it
                 },
-                label = { Text("Username") },
+                label = { Text(stringResource(id = R.string.username), color = Color.Black) },
                 placeholder = { Text(text = "") },
-                // underline removal
                 colors = TextFieldDefaults.textFieldColors(
+                    // underline removal
                     focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
+                    unfocusedIndicatorColor = Color.Transparent,
+                    // container
+                    containerColor = Color.White,
                 ),
                 shape = RoundedCornerShape(20.dp)
             )
@@ -82,14 +91,17 @@ fun Login(
                 onValueChange = {
                     password = it
                 },
-                label = { Text("Password") },
+                label = { Text(stringResource(id = R.string.password), color = Color.Black) },
                 placeholder = { Text(text = "") },
                 shape = RoundedCornerShape(20.dp),
-                // underline removal
                 colors = TextFieldDefaults.textFieldColors(
+                    // underline removal
                     focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-                ),
+                    unfocusedIndicatorColor = Color.Transparent,
+                    // container
+                    containerColor = Color.White,
+
+                    ),
                 // hides password
                 visualTransformation = PasswordVisualTransformation()
             )
@@ -98,10 +110,15 @@ fun Login(
                 onClick = {
                     // todo
                 },
-                modifier = Modifier.width(150.dp),
+                modifier = Modifier.width(160.dp),
                 shape = RoundedCornerShape(20),
             ) {
-                Text(text = "Log In", fontSize = 22.sp)
+                Icon(
+                    painter = painterResource(R.drawable.login_24dp),
+                    contentDescription = stringResource(id = R.string.login_icon_desc),
+                    modifier = Modifier.padding(end = 20.dp),
+                )
+                Text(text = stringResource(id = R.string.login), fontSize = 22.sp)
             }
 
             Button(
@@ -110,7 +127,7 @@ fun Login(
                 modifier = Modifier.height(35.dp),
             ) {
                 Text(
-                    text = "Register",
+                    text = stringResource(id = R.string.register),
                     style = TextStyle(
                         color = Color.Black,
                         textDecoration = TextDecoration.Underline
@@ -127,7 +144,7 @@ fun Login(
                 .padding(bottom = 30.dp)
         ) {
             Text(
-                text = "Healthcare providers",
+                text = stringResource(id = R.string.healthcare_providers),
                 style = TextStyle(
                     color = Color.Black,
                     textDecoration = TextDecoration.Underline

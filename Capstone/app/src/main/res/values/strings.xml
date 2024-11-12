@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">Capstone</string>
+    <string name="app_name">DAC</string>
+    <string name="login_icon_desc">Login Icon</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Log In</string>
+    <string name="register">Register</string>
+    <string name="healthcare_providers">Healthcare providers</string>
 </resources>
