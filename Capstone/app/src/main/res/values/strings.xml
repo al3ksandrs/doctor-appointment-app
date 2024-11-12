@@ -6,4 +6,6 @@
     <string name="login">Log In</string>
     <string name="register">Register</string>
     <string name="healthcare_providers">Healthcare providers</string>
+    <string name="email">Email</string>
+    <string name="phone_number">Phone number</string>
 </resources>

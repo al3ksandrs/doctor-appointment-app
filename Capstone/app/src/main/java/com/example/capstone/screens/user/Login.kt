@@ -29,7 +29,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
@@ -108,7 +107,7 @@ fun Login(
 
             Button(
                 onClick = {
-                    // todo
+                    navController.navigate("myAppointments")
                 },
                 modifier = Modifier.width(160.dp),
                 shape = RoundedCornerShape(20),
@@ -122,7 +121,7 @@ fun Login(
             }
 
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { navController.navigate("register") },
                 colors = ButtonDefaults.textButtonColors(),
                 modifier = Modifier.height(35.dp),
             ) {
