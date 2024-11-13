@@ -9,4 +9,5 @@ sealed class Screens(val route: String) {
     object CalendarView: Screens("calendarView")
     object TimeslotSelect: Screens("timeslotSelect")
     object TimeslotDetails: Screens("timeslotDetails")
+    object AppointmentDetails: Screens("appointmentDetails")
 }

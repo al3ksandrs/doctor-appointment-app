@@ -20,6 +20,7 @@ import com.example.capstone.data.model.Appointment
 import com.example.capstone.data.model.User
 import com.example.capstone.data.viewmodel.DACViewModel
 import com.example.capstone.screens.Screens
+import com.example.capstone.screens.user.AppointmentDetails
 import com.example.capstone.screens.user.CalendarView
 import com.example.capstone.screens.user.CancelAppointment
 import com.example.capstone.screens.user.ChangeTimeslot
@@ -86,6 +87,9 @@ private fun DACNavHost(
         }
         composable(route = Screens.TimeslotDetails.route) {
             TimeslotDetails(navController, viewModel)
+        }
+        composable(route = Screens.AppointmentDetails.route) {
+            AppointmentDetails(navController, viewModel)
         }
     }
 }

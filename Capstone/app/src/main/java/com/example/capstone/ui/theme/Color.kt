@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.Color
 val LightBlueBackground = Color(0xFFBFD7E5)
 val White = Color(0xFFFFFFFF)
 val ContainerGray = Color(0xFFF5F5F5)
+val MicRed = Color(0xFFFF9090)
 
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)

@@ -87,7 +87,7 @@ fun TimeslotDetails(
                 // make appointment button
                 Button(
                     onClick = {
-                        navController.popBackStack()
+                        navController.navigate("appointmentDetails")
                     },
                     modifier = Modifier
                         .width(180.dp)

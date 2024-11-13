@@ -16,6 +16,15 @@
     <string name="no_go_back">No, go back</string>
     <string name="go_back">Go back</string>
     <string name="open">Open</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="describe_health_issue">Describe your health issue:</string>
+    <string name="hold_to_record">(Hold to record)</string>
+    <string name="urgent">Do you want the doctor to call you back urgently?</string>
+    <string name="voice_note">Do you want to leave a voice note?
+(If describing it is too long for text)</string>
+    <string name="type_here">Type here...</string>
+    <string name="next_step">Next step</string>
     <string name="make_appointment">Make appointment</string>
     <string name="forward">Forward></string>
     <string name="back">Back</string>
