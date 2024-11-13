@@ -1,12 +1,14 @@
 plugins {
     alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.org.jetbrains.kotlin.android)
+
+    alias(libs.plugins.compose.compiler)
     id("kotlin-kapt")
 }
 
 android {
     namespace = "com.example.capstone"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.capstone"
@@ -51,7 +53,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

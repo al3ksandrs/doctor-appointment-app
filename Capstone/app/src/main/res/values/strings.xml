@@ -15,6 +15,10 @@
     <string name="yes_cancel">Yes, cancel</string>
     <string name="no_go_back">No, go back</string>
     <string name="go_back">Go back</string>
+    <string name="open">Open</string>
+    <string name="forward">Forward></string>
+    <string name="back">Back</string>
+    <string name="closed">Closed</string>
     <string name="phone_number">Phone number</string>
     <string name="my_appointments">My Appointments</string>
     <string name="new_appointment">New appointment</string>

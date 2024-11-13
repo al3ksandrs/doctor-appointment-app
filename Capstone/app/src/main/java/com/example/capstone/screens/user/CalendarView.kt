@@ -132,7 +132,7 @@ fun CalendarView(
             // continue button
             Button(
                 onClick = {
-                    navController.navigate("calendarView")
+                    navController.navigate("timeslotSelect")
                 },
                 modifier = Modifier
                     .width(180.dp)
