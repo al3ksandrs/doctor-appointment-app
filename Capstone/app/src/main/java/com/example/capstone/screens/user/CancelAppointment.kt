@@ -75,7 +75,7 @@ fun CancelAppointment(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Are you sure you want to cancel this appointment? This cant be undone!",
+                    text = stringResource(id = R.string.cancel_confirmation),
                     fontSize = 20.sp
                 )
 

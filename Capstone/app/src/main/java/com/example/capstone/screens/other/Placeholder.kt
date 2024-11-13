@@ -1,4 +1,4 @@
-package com.example.capstone.screens
+package com.example.capstone.screens.other
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

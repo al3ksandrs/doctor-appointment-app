@@ -159,7 +159,7 @@ fun MyAppointments(
             // new appointment button
             Button(
                 onClick = {
-                    /*TODO*/
+                    navController.navigate("calendarView")
                 },
                 modifier = Modifier
                     .width(180.dp),
