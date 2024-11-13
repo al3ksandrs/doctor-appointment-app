@@ -134,7 +134,10 @@ fun TimeslotSelect(
                     val isOpen = availabilityList[hour]
 
                     Button(
-                        onClick = { /*TODO: timeslot selection logic*/ },
+                        onClick = { if(isOpen){
+                            navController.navigate("timeslotDetails")
+                            /*TODO: further logic needed*/
+                        } },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 35.dp)

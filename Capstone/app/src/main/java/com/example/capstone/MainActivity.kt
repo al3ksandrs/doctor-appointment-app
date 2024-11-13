@@ -26,6 +26,7 @@ import com.example.capstone.screens.user.ChangeTimeslot
 import com.example.capstone.screens.user.Login
 import com.example.capstone.screens.user.MyAppointments
 import com.example.capstone.screens.user.Register
+import com.example.capstone.screens.user.TimeslotDetails
 import com.example.capstone.screens.user.TimeslotSelect
 import com.example.capstone.ui.theme.CapstoneTheme
 import com.example.capstone.ui.theme.LightBlueBackground
@@ -82,6 +83,9 @@ private fun DACNavHost(
         }
         composable(route = Screens.TimeslotSelect.route) {
             TimeslotSelect(navController, viewModel)
+        }
+        composable(route = Screens.TimeslotDetails.route) {
+            TimeslotDetails(navController, viewModel)
         }
     }
 }

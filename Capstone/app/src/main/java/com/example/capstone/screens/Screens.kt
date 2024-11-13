@@ -8,4 +8,5 @@ sealed class Screens(val route: String) {
     object ChangeTimeslot: Screens("changeTimeslot")
     object CalendarView: Screens("calendarView")
     object TimeslotSelect: Screens("timeslotSelect")
+    object TimeslotDetails: Screens("timeslotDetails")
 }

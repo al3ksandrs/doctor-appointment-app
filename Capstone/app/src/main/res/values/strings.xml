@@ -16,6 +16,7 @@
     <string name="no_go_back">No, go back</string>
     <string name="go_back">Go back</string>
     <string name="open">Open</string>
+    <string name="make_appointment">Make appointment</string>
     <string name="forward">Forward></string>
     <string name="back">Back</string>
     <string name="closed">Closed</string>
