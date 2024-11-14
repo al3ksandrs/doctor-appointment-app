@@ -83,8 +83,9 @@ private fun DACNavHost(
         composable(route = Screens.CalendarView.route) {
             CalendarView(navController, viewModel)
         }
-        composable(route = Screens.TimeslotSelect.route) {
-            TimeslotSelect(navController, viewModel)
+        composable(route = "timeslotSelect/{date}") { backStackEntry ->
+            val date = backStackEntry.arguments?.getString("date") ?: ""
+            TimeslotSelect(navController, viewModel, date)
         }
         composable(route = Screens.TimeslotDetails.route) {
             TimeslotDetails(navController, viewModel)

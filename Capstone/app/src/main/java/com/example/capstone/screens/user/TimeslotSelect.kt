@@ -40,11 +40,13 @@ import java.util.Calendar
 @Composable
 fun TimeslotSelect(
     navController: NavHostController,
-    viewmodel: DACViewModel
+    viewmodel: DACViewModel,
+    date: String
 ) {
-    // initial date TODO: get year, month and day from calendarView.kt and use it here
+    // initial date we get from calendarView.kt
+    val dateParts = date.split("-").map { it.toInt() }
     val initialDate = Calendar.getInstance().apply {
-        set(2024, Calendar.SEPTEMBER, 25)
+        set(dateParts[0] - 1, dateParts[1] - 2, dateParts[2] - 1)
     }
 
     // date state as milliseconds so recomposition is triggered

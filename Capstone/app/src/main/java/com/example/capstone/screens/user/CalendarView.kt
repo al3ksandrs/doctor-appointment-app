@@ -15,6 +15,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,6 +48,11 @@ fun CalendarView(
     val initialDay = Utils.dateFormatter.format(Calendar.getInstance().time).substring(0, 2)
     val initialMonth = Utils.dateFormatter.format(Calendar.getInstance().time).substring(3, 5)
     val initialYear = Utils.dateFormatter.format(Calendar.getInstance().time).substring(6)
+
+    // selected values
+    val selectedDay = remember { mutableStateOf(initialDay) }
+    val selectedMonth = remember { mutableStateOf(initialMonth) }
+    val selectedYear = remember { mutableStateOf(initialYear) }
 
     Box(
         modifier = Modifier
@@ -87,9 +94,7 @@ fun CalendarView(
                     textStyle = TextStyle.Default.copy(fontSize = 20.sp),
                     textColor = Color.Gray,
                     selectedTextColor = Color.Black,
-                    onItemSelected = { index, selectedDay ->
-                        // TODO: LOGIC
-                    }
+                    onItemSelected = { _, day -> selectedDay.value = day }
                 )
 
                 // month
@@ -101,9 +106,7 @@ fun CalendarView(
                     textStyle = TextStyle.Default.copy(fontSize = 20.sp),
                     textColor = Color.Gray,
                     selectedTextColor = Color.Black,
-                    onItemSelected = { index, selectedMonth ->
-                        // TODO: LOGIC
-                    }
+                    onItemSelected = { _, month -> selectedMonth.value = month }
                 )
 
                 // year
@@ -115,9 +118,7 @@ fun CalendarView(
                     textStyle = TextStyle.Default.copy(fontSize = 20.sp),
                     textColor = Color.Gray,
                     selectedTextColor = Color.Black,
-                    onItemSelected = { index, selectedYear ->
-                        // TODO: LOGIC
-                    }
+                    onItemSelected = {  _, day -> selectedYear.value = day }
                 )
             }
         }
@@ -132,7 +133,8 @@ fun CalendarView(
             // continue button
             Button(
                 onClick = {
-                    navController.navigate("timeslotSelect")
+                    val date = "${selectedYear.value}-${selectedMonth.value}-${selectedDay.value}"
+                    navController.navigate("timeslotSelect/$date")
                 },
                 modifier = Modifier
                     .width(180.dp)
