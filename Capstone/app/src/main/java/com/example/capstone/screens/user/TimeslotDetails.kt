@@ -27,20 +27,24 @@ import androidx.navigation.NavHostController
 import com.example.capstone.R
 import com.example.capstone.data.viewmodel.DACViewModel
 import com.example.capstone.ui.theme.ContainerGray
+import java.util.Calendar
 
 @Composable
 fun TimeslotDetails(
     navController: NavHostController,
-    viewmodel: DACViewModel
+    viewmodel: DACViewModel,
+    date: String,
+    time: String
 ) {
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 15.dp)
     ) {
-        // top text
+        // top text, date and time is passed from TimeslotSelect
         Text(
-            text = "24/09/2024 - 16:00",
+            text = "$date - $time",
             fontSize = 26.sp,
             fontWeight = FontWeight.Medium,
             modifier = Modifier

@@ -137,8 +137,9 @@ fun TimeslotSelect(
 
                     Button(
                         onClick = { if(isOpen){
-                            navController.navigate("timeslotDetails")
-                            /*TODO: further logic needed*/
+                            // pass the date and time to the TimeslotDetails screen
+                            val timeSlot = String.format("%02d:00", hour)
+                            navController.navigate("timeslotDetails/$formattedDate/$timeSlot")
                         } },
                         modifier = Modifier
                             .fillMaxWidth()
