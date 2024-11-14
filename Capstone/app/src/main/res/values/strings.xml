@@ -18,6 +18,14 @@
     <string name="open">Open</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="hours">hours</string>
+    <string name="do_you_want_notification">Do you want a notification?
+        If not, press the button below to
+        skip this step.</string>
+    <string name="how_long_before_appointment">How long before the
+    appointment do you want
+    to receive a notification?</string>
+    <string name="finish_appointment">Finish appointment</string>
     <string name="describe_health_issue">Describe your health issue:</string>
     <string name="hold_to_record">(Hold to record)</string>
     <string name="urgent">Do you want the doctor to call you back urgently?</string>

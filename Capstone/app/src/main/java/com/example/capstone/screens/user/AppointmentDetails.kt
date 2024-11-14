@@ -143,7 +143,7 @@ fun AppointmentDetails(
                 // next step button
                 Button(
                     onClick = {
-                        navController.popBackStack()
+                        navController.navigate("notification")
                     },
                     modifier = Modifier
                         .width(180.dp)
