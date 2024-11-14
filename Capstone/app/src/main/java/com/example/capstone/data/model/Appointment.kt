@@ -26,4 +26,14 @@ data class Appointment (
 
     @ColumnInfo(name = "doctor")
     var doctor: String,
+
+    @ColumnInfo(name = "healthIssue")
+    var healthIssue: String,
+
+    // file path to mp.4 file perhaps?
+    @ColumnInfo(name = "voiceMemo")
+    var voiceMemo: String,
+
+    @ColumnInfo(name = "isItUrgent")
+    var isItUrgent: Boolean,
 )
