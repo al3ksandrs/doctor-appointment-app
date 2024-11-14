@@ -92,11 +92,15 @@ private fun DACNavHost(
             val time = backStackEntry.arguments?.getString("time") ?: ""
             TimeslotDetails(navController, viewModel, date, time)
         }
-        composable(route = Screens.AppointmentDetails.route) {
-            AppointmentDetails(navController, viewModel)
+        composable(route = "appointmentDetails/{date}/{time}") { backStackEntry ->
+            val date = backStackEntry.arguments?.getString("date") ?: ""
+            val time = backStackEntry.arguments?.getString("time") ?: ""
+            AppointmentDetails(navController, viewModel, date, time)
         }
-        composable(route = Screens.Notification.route) {
-            Notification(navController, viewModel)
+        composable(route = "notification/{date}/{time}") { backStackEntry ->
+            val date = backStackEntry.arguments?.getString("date") ?: ""
+            val time = backStackEntry.arguments?.getString("time") ?: ""
+            Notification(navController, viewModel, date, time)
         }
     }
 }

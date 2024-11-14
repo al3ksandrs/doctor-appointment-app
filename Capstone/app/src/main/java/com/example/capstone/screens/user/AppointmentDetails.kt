@@ -43,8 +43,11 @@ import com.example.capstone.ui.theme.MicRed
 @Composable
 fun AppointmentDetails(
     navController: NavHostController,
-    viewmodel: DACViewModel
+    viewmodel: DACViewModel,
+    date: String,
+    time: String
 ) {
+
     var healthIssue by remember { mutableStateOf("") }
     var isUrgent by remember { mutableStateOf(false) }
 
@@ -55,7 +58,8 @@ fun AppointmentDetails(
     ) {
         // top text
         Text(
-            text = "24/09/2024 - 16:00",
+            // using date and time from the previous screen (TimeslotDetails.kt)
+            text = "$date - $time",
             fontSize = 26.sp,
             fontWeight = FontWeight.Medium,
             modifier = Modifier
@@ -143,7 +147,7 @@ fun AppointmentDetails(
                 // next step button
                 Button(
                     onClick = {
-                        navController.navigate("notification")
+                        navController.navigate("notification/$date/$time")
                     },
                     modifier = Modifier
                         .width(180.dp)

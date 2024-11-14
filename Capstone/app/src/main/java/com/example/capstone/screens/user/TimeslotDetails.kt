@@ -91,7 +91,7 @@ fun TimeslotDetails(
                 // make appointment button
                 Button(
                     onClick = {
-                        navController.navigate("appointmentDetails")
+                        navController.navigate("appointmentDetails/${date}/${time}")
                     },
                     modifier = Modifier
                         .width(180.dp)

@@ -43,6 +43,10 @@ fun TimeslotSelect(
     viewmodel: DACViewModel,
     date: String
 ) {
+    // opening and closing times in hours
+    val startHour = 9
+    val endHour = 16
+
     // initial date we get from calendarView.kt
     val dateParts = date.split("-").map { it.toInt() }
     val initialDate = Calendar.getInstance().apply {
@@ -58,7 +62,7 @@ fun TimeslotSelect(
     }
 
     // sample availability list (TODO: remove later since its for demo purposes)
-    val availabilityList = List(24) { hour -> hour % 2 == 0 }
+    val availabilityList = List(endHour - startHour + 1) { true }
 
     Box(
         modifier = Modifier
@@ -130,15 +134,15 @@ fun TimeslotSelect(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                items(24) { hour ->
-                    val timeSlot = String.format("%02d:00", hour)
+                items(endHour - startHour + 1) { hour ->
+                    val timeSlot = String.format("%02d:00", startHour + hour)
 
                     val isOpen = availabilityList[hour]
 
                     Button(
                         onClick = { if(isOpen){
                             // pass the date and time to the TimeslotDetails screen
-                            val timeSlot = String.format("%02d:00", hour)
+                            val timeSlot = String.format("%02d:00", startHour + hour)
                             navController.navigate("timeslotDetails/$formattedDate/$timeSlot")
                         } },
                         modifier = Modifier

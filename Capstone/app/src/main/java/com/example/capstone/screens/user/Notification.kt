@@ -39,7 +39,9 @@ import java.util.Calendar
 @Composable
 fun Notification(
     navController: NavHostController,
-    viewmodel: DACViewModel
+    viewmodel: DACViewModel,
+    date: String,
+    time: String
 ) {
     var hours by remember { mutableStateOf(0) }
 
@@ -50,7 +52,7 @@ fun Notification(
     ) {
         // top text
         Text(
-            text = "25/09/2024 - 12:00",
+            text = "$date - $time",
             fontSize = 26.sp,
             fontWeight = FontWeight.Medium,
             modifier = Modifier
