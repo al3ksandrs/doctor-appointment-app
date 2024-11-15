@@ -11,6 +11,7 @@ import com.example.capstone.data.model.User
 @Database(entities = [User::class], version = 1, exportSchema = false)
 abstract class DACDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
+    abstract fun appointmentDao(): AppointmentDao
 
     companion object {
         // Create singleton

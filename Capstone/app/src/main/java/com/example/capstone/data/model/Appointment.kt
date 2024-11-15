@@ -13,7 +13,7 @@ data class Appointment (
     var id: Long = 0,
 
     @ColumnInfo(name = "userID")
-    var userID: Int,
+    var userID: Long,
 
     @ColumnInfo(name = "date")
     var date: Date,
