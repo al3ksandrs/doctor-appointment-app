@@ -53,11 +53,16 @@ fun MyAppointments(
     // get user ID and appointments
     LaunchedEffect(username) {
         userViewmodel.getUserID(username.toString()) { id ->
-            userID = id
-            // only get appointments if userID is valid
-            userID?.let { id ->
+            if (id != null) {
+                userID = id
+                // only get appointments if userID is valid
                 viewmodel.getAllAppointments(id) { result ->
                     appointments = result
+                }
+            } else {
+                // navigate back to login screen if theres a null userID (and clear backstack)
+                navController.navigate("login") {
+                    popUpTo("myAppointments") { inclusive = true }
                 }
             }
         }
