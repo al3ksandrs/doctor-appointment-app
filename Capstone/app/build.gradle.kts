@@ -79,4 +79,7 @@ dependencies {
 
     // To use Kotlin annotation processing tool (kapt)
     kapt("androidx.room:room-compiler:$roomVersion")
+
+    // jbcrypt for hashing of passwords
+    implementation ("org.mindrot:jbcrypt:0.4")
 }

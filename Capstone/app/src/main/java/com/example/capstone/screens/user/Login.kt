@@ -1,5 +1,6 @@
 package com.example.capstone.screens.user
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -37,13 +39,23 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.capstone.R
 import com.example.capstone.data.viewmodel.DACViewModel
+import com.example.capstone.data.viewmodel.UserViewmodel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Login(
     navController: NavHostController,
-    viewmodel: DACViewModel
+    viewmodel: DACViewModel,
+    userViewmodel: UserViewmodel
 ) {
+    // check if user is already logged in and if so they can pass the login screen
+    if (userViewmodel.isUserLoggedIn()) {
+        navController.navigate("myAppointments")
+    }
+
+    // get current context
+    val context = LocalContext.current
+
     var username by remember { mutableStateOf(TextFieldValue("")) }
     var password by remember { mutableStateOf(TextFieldValue("")) }
 
@@ -107,7 +119,16 @@ fun Login(
 
             Button(
                 onClick = {
-                    navController.navigate("myAppointments")
+                    // check if combination of username and password is correct
+                    userViewmodel.validateUser(username.text, password.text) { user ->
+                        if (user != null) {
+                            // save login state
+                            userViewmodel.saveLoginState(true, username.text)
+                            navController.navigate("myAppointments")
+                        } else {
+                            Toast.makeText(context, R.string.login_error, Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 },
                 modifier = Modifier.width(160.dp),
                 shape = RoundedCornerShape(20),

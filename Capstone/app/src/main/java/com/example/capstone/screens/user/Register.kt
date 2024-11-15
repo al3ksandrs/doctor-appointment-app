@@ -32,14 +32,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.capstone.R
+import com.example.capstone.data.model.User
 import com.example.capstone.data.viewmodel.DACViewModel
+import com.example.capstone.data.viewmodel.UserViewmodel
 import com.example.capstone.ui.theme.ContainerGray
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Register(
     navController: NavHostController,
-    viewmodel: DACViewModel
+    viewmodel: DACViewModel,
+    userViewmodel: UserViewmodel
 ) {
     var username by remember { mutableStateOf(TextFieldValue("")) }
     var password by remember { mutableStateOf(TextFieldValue("")) }
@@ -169,6 +172,21 @@ fun Register(
         // register button
         Button(
             onClick = {
+                // create a User object
+                val newUser = User(
+                    username = username.text,
+                    password = password.text,
+                    email = email.text,
+                    phoneNumber = phoneNumber.text
+                )
+
+                // save the User object into the database through the viewmodel
+                userViewmodel.insertUser(newUser)
+
+                // save login state after registering
+                userViewmodel.saveLoginState(true, username.text)
+
+                // navigate to myAppointments after registration
                 navController.navigate("myAppointments")
             },
             modifier = Modifier

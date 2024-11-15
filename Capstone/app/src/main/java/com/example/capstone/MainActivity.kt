@@ -19,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.capstone.data.model.Appointment
 import com.example.capstone.data.model.User
 import com.example.capstone.data.viewmodel.DACViewModel
+import com.example.capstone.data.viewmodel.UserViewmodel
 import com.example.capstone.screens.Screens
 import com.example.capstone.screens.user.AppointmentDetails
 import com.example.capstone.screens.user.CalendarView
@@ -57,6 +58,7 @@ private fun DACNavHost(
     navController: NavHostController, modifier: Modifier
 ) {
     val viewModel: DACViewModel = viewModel()
+    val userViewmodel: UserViewmodel = viewModel()
 
     NavHost(
         navController = navController,
@@ -64,13 +66,13 @@ private fun DACNavHost(
         modifier = modifier
     ) {
         composable(route = Screens.Login.route) {
-            Login(navController, viewModel)
+            Login(navController, viewModel, userViewmodel)
         }
         composable(route = Screens.Register.route) {
-            Register(navController, viewModel)
+            Register(navController, viewModel, userViewmodel)
         }
         composable(route = Screens.MyAppointments.route) {
-            MyAppointments(navController, viewModel, generateDummyAppointments())
+            MyAppointments(navController, viewModel, generateDummyAppointments(), userViewmodel)
         }
         composable(route = Screens.ChangeTimeslot.route) {
             ChangeTimeslot(navController, viewModel)
@@ -113,14 +115,20 @@ fun generateDummyAppointments(): List<Appointment> {
             date = Date(2024 - 1900, 9, 13),
             time = Time(12, 0, 0),
             location = "Amsterdam Hospital",
-            doctor = "Dr. John Doe"
+            doctor = "Dr. John Doe",
+            healthIssue = "test issue 1",
+            isItUrgent = false,
+            voiceMemo = "url 1"
         ),
         Appointment(
             userID = 2,
             date = Date(2024 - 1900, 10, 14),
             time = Time(15, 30, 0),
             location = "Utrecht Clinics",
-            doctor = "Dr. Jane Smith"
+            doctor = "Dr. Jane Smith",
+            healthIssue = "test issue 2",
+            isItUrgent = true,
+            voiceMemo = "url 2/3/4/5"
         )
     )
 }

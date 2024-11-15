@@ -32,13 +32,15 @@ import com.example.capstone.data.model.Appointment
 import com.example.capstone.data.utils.Utils.Companion.dateFormatter
 import com.example.capstone.data.utils.Utils.Companion.timeFormatter
 import com.example.capstone.data.viewmodel.DACViewModel
+import com.example.capstone.data.viewmodel.UserViewmodel
 import com.example.capstone.ui.theme.ContainerGray
 
 @Composable
 fun MyAppointments(
     navController: NavHostController,
     viewmodel: DACViewModel,
-    appointments: List<Appointment>
+    appointments: List<Appointment>,
+    userViewmodel: UserViewmodel
 ) {
     Box(
         modifier = Modifier
@@ -183,7 +185,14 @@ fun MyAppointments(
             // logout button
             Button(
                 onClick = {
-                   navController.navigate("login")
+                    // clear login state so user doesn't stay logged in
+                    userViewmodel.saveLoginState(false)
+
+                    // navigate to the login screen
+                    navController.navigate("login") {
+                        // clear backstack so user can't just go back to myAppointments if he isn't logged in
+                        popUpTo("myAppointments") { inclusive = true }
+                    }
                 },
                 modifier = Modifier
                     .width(180.dp)

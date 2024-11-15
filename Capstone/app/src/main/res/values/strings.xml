@@ -18,6 +18,7 @@
     <string name="open">Open</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="login_error">Login failed, please check your username or password!</string>
     <string name="hours">hours</string>
     <string name="do_you_want_notification">Do you want a notification?
         If not, press the button below to
