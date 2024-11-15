@@ -1,5 +1,10 @@
 package com.example.capstone.screens.user
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.NotificationCompat
 import androidx.navigation.NavHostController
 import com.example.capstone.R
 import com.example.capstone.data.model.Appointment
@@ -39,7 +45,7 @@ import com.example.capstone.data.viewmodel.UserViewmodel
 import com.example.capstone.ui.theme.ContainerGray
 import java.sql.Time
 import java.util.Calendar
-import java.util.Date
+import java.util.concurrent.TimeUnit
 
 @Composable
 fun Notification(
@@ -51,8 +57,20 @@ fun Notification(
     healthIssue: String,
     isUrgent: Boolean
 ) {
+    val context = navController.context
     var hours by remember { mutableStateOf(0) }
     val username = userViewmodel.getLoggedInUsername()
+
+    // create notification channel
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val channelId = "appointment_reminder_channel"
+        val channelName = "Appointment Reminders"
+        val importance = NotificationManager.IMPORTANCE_HIGH
+        val notificationChannel = NotificationChannel(channelId, channelName, importance)
+        val notificationManager: NotificationManager =
+            navController.context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(notificationChannel)
+    }
 
     Box(
         modifier = Modifier
@@ -184,6 +202,14 @@ fun Notification(
                                 // insert appointment into database
                                 viewModel.insertAppointment(appointment)
 
+                                // schedule notification
+                                val notificationTime = calculateNotificationTime(date, time, hours)
+                                scheduleNotification(context, notificationTime, hours)
+
+//                                // NOTIFICATION DEBUG
+//                                val date = Date(notificationTime)
+//                                Log.d("notification time:", date.toString())
+
                                 // navigate back to myAppointments when done
                                 navController.navigate("myAppointments")
                             }
@@ -212,4 +238,33 @@ fun Notification(
             }
         }
     }
+}
+
+// calculate the time difference for notifications
+fun calculateNotificationTime(date: String, time: String, hoursBefore: Int): Long {
+    val calendar = Calendar.getInstance()
+    val appointmentDate = Utils.dateFormatter.parse(date)
+    val appointmentTime = Utils.timeFormatter.parse(time)
+
+    calendar.time = appointmentDate
+    calendar.set(Calendar.HOUR_OF_DAY, appointmentTime.hours)
+    calendar.set(Calendar.MINUTE, appointmentTime.minutes)
+
+    val reminderTime = calendar.timeInMillis - TimeUnit.HOURS.toMillis(hoursBefore.toLong())
+    return reminderTime
+}
+
+// schedule a notification with the calculated time above
+fun scheduleNotification(context: Context, reminderTime: Long, hours: Int) {
+    val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+    val notification = NotificationCompat.Builder(context, "appointment_reminder_channel")
+        .setContentTitle("Doctor's appointment reminder")
+        .setContentText("Your doctor's appointment is in $hours hours!")
+        .setSmallIcon(R.drawable.doctor_app_logo)
+        .setWhen(reminderTime)
+        .build()
+
+    val notificationId = 1
+    notificationManager.notify(notificationId, notification)
 }
