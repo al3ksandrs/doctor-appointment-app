@@ -6,9 +6,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.capstone.data.model.Appointment
 import com.example.capstone.data.model.User
+import com.example.capstone.data.utils.Converters
 
-@Database(entities = [User::class], version = 1, exportSchema = false)
+@Database(entities = [User::class, Appointment::class], version = 2, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class DACDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun appointmentDao(): AppointmentDao

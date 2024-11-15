@@ -16,6 +16,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,102 +41,114 @@ import com.example.capstone.ui.theme.ContainerGray
 @Composable
 fun CancelAppointment(
     navController: NavHostController,
-    appointment: Appointment,
+    appointmentID: Long,
     viewModel: DACViewModel
 ) {
-    val formattedDate = dateFormatter.format(appointment.date)
-    val formattedTime = timeFormatter.format(appointment.time)
+    var appointment by remember { mutableStateOf<Appointment?>(null) }
 
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 20.dp)
-    ) {
-        Row(
-            modifier = Modifier.align(Alignment.TopCenter)
-        ) {
-            Text(
-                text = formattedDate,
-                fontSize = 26.sp,
-                fontWeight = FontWeight.Medium
-            )
-            Text(text = " - ", fontSize = 26.sp, fontWeight = FontWeight.Medium)
-            Text(text = formattedTime, fontSize = 26.sp, fontWeight = FontWeight.Medium)
+    LaunchedEffect(appointmentID) {
+        viewModel.getAppointmentById(appointmentID) { fetchedAppointment ->
+            appointment = fetchedAppointment
         }
+    }
 
-        Column(
+    appointment?.let { appointment ->
+
+        val formattedDate = dateFormatter.format(appointment.date)
+        val formattedTime = timeFormatter.format(appointment.time)
+
+        Box(
             modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(top = 70.dp)
+                .fillMaxWidth()
+                .padding(top = 20.dp)
         ) {
-            Column(
-                modifier = Modifier
-                    .background(
-                        color = Color.White,
-                        shape = RoundedCornerShape(20.dp)
-                    )
-                    .width(350.dp)
-                    .padding(35.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+            Row(
+                modifier = Modifier.align(Alignment.TopCenter)
             ) {
                 Text(
-                    text = stringResource(id = R.string.cancel_confirmation),
-                    fontSize = 20.sp
+                    text = formattedDate,
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.Medium
                 )
+                Text(text = " - ", fontSize = 26.sp, fontWeight = FontWeight.Medium)
+                Text(text = formattedTime, fontSize = 26.sp, fontWeight = FontWeight.Medium)
+            }
 
-                // yes, cancel button
-                Button(
-                    onClick = {
-                        // TODO: get viewmodel to delete the appointment by ID
-                        navController.popBackStack()
-                    },
+            Column(
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(top = 70.dp)
+            ) {
+                Column(
                     modifier = Modifier
-                        .width(180.dp)
-                        .padding(top = 50.dp)
-                        .height(50.dp),
-                    shape = RoundedCornerShape(20),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = ContainerGray,
-                        contentColor = Color.Black
-                    )
+                        .background(
+                            color = Color.White,
+                            shape = RoundedCornerShape(20.dp)
+                        )
+                        .width(350.dp)
+                        .padding(35.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Icon(
-                        painter = painterResource(R.drawable.close_24dp),
-                        contentDescription = stringResource(id = R.string.yes_cancel),
-                        modifier = Modifier.padding(end = 15.dp),
-                    )
                     Text(
-                        text = stringResource(id = R.string.yes_cancel),
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.Center, fontWeight = FontWeight.Bold
+                        text = stringResource(id = R.string.cancel_confirmation),
+                        fontSize = 20.sp
                     )
-                }
 
-                // no, go back button
-                Button(
-                    onClick = {
-                        navController.popBackStack()
-                    },
-                    modifier = Modifier
-                        .width(180.dp)
-                        .padding(top = 15.dp)
-                        .height(50.dp),
-                    shape = RoundedCornerShape(20),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = ContainerGray,
-                        contentColor = Color.Black
-                    )
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.undo_24dp),
-                        contentDescription = stringResource(id = R.string.no_go_back),
-                        modifier = Modifier.padding(end = 15.dp),
-                    )
-                    Text(
-                        text = stringResource(id = R.string.no_go_back),
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.Center
-                    )
+                    // yes, cancel button
+                    Button(
+                        onClick = {
+                            // delete the appointment and go back to myAppointments after
+                            viewModel.deleteAppointmentById(appointmentID)
+                            navController.popBackStack()
+                        },
+                        modifier = Modifier
+                            .width(180.dp)
+                            .padding(top = 50.dp)
+                            .height(50.dp),
+                        shape = RoundedCornerShape(20),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = ContainerGray,
+                            contentColor = Color.Black
+                        )
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.close_24dp),
+                            contentDescription = stringResource(id = R.string.yes_cancel),
+                            modifier = Modifier.padding(end = 15.dp),
+                        )
+                        Text(
+                            text = stringResource(id = R.string.yes_cancel),
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Center, fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                    // no, go back button
+                    Button(
+                        onClick = {
+                            navController.popBackStack()
+                        },
+                        modifier = Modifier
+                            .width(180.dp)
+                            .padding(top = 15.dp)
+                            .height(50.dp),
+                        shape = RoundedCornerShape(20),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = ContainerGray,
+                            contentColor = Color.Black
+                        )
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.undo_24dp),
+                            contentDescription = stringResource(id = R.string.no_go_back),
+                            modifier = Modifier.padding(end = 15.dp),
+                        )
+                        Text(
+                            text = stringResource(id = R.string.no_go_back),
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
         }

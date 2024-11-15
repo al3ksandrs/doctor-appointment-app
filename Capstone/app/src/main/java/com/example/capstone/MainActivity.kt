@@ -72,15 +72,14 @@ private fun DACNavHost(
             Register(navController, viewModel, userViewmodel)
         }
         composable(route = Screens.MyAppointments.route) {
-            MyAppointments(navController, viewModel, generateDummyAppointments(), userViewmodel)
+            MyAppointments(navController, viewModel, userViewmodel)
         }
         composable(route = Screens.ChangeTimeslot.route) {
             ChangeTimeslot(navController, viewModel)
         }
         composable(route = "cancelAppointment/{appointmentID}") { backStackEntry ->
-            val appointmentID = backStackEntry.arguments?.getString("appointmentID")?.toInt()
-            // TODO: get appointment through viewmodel and pass it to the cancellation screen
-            CancelAppointment(navController, generateDummyAppointments()[1], viewModel)
+            val appointmentID = backStackEntry.arguments?.getString("appointmentID")?.toLong()
+            CancelAppointment(navController, appointmentID!!, viewModel)
         }
         composable(route = Screens.CalendarView.route) {
             CalendarView(navController, viewModel)
@@ -99,36 +98,12 @@ private fun DACNavHost(
             val time = backStackEntry.arguments?.getString("time") ?: ""
             AppointmentDetails(navController, viewModel, date, time)
         }
-        composable(route = "notification/{date}/{time}") { backStackEntry ->
+        composable(route = "notification/{date}/{time}/{healthIssue}/{isUrgent}") { backStackEntry ->
             val date = backStackEntry.arguments?.getString("date") ?: ""
             val time = backStackEntry.arguments?.getString("time") ?: ""
-            Notification(navController, viewModel, date, time)
+            val healthIssue = backStackEntry.arguments?.getString("healthIssue") ?: ""
+            val isUrgent = backStackEntry.arguments?.getString("isUrgent").toBoolean()
+            Notification(navController, viewModel, userViewmodel, date, time, healthIssue, isUrgent)
         }
     }
-}
-
-// dummy data generated for testing NOTE TO SELF: DELETE LATER
-fun generateDummyAppointments(): List<Appointment> {
-    return listOf(
-        Appointment(
-            userID = 1,
-            date = Date(2024 - 1900, 9, 13),
-            time = Time(12, 0, 0),
-            location = "Amsterdam Hospital",
-            doctor = "Dr. John Doe",
-            healthIssue = "test issue 1",
-            isItUrgent = false,
-            voiceMemo = "url 1"
-        ),
-        Appointment(
-            userID = 2,
-            date = Date(2024 - 1900, 10, 14),
-            time = Time(15, 30, 0),
-            location = "Utrecht Clinics",
-            doctor = "Dr. Jane Smith",
-            healthIssue = "test issue 2",
-            isItUrgent = true,
-            voiceMemo = "url 2/3/4/5"
-        )
-    )
 }

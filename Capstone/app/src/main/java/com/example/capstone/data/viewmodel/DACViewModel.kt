@@ -35,4 +35,12 @@ class DACViewModel(application: Application) : AndroidViewModel(application) {
             appointmentRepository.deleteAppointmentById(appointmentID)
         }
     }
+
+    // get an appointment by ID
+    fun getAppointmentById(appointmentID: Long, onResult: (Appointment?) -> Unit) {
+        mainScope.launch(Dispatchers.IO) {
+            val appointment = appointmentRepository.getAppointmentById(appointmentID)
+            onResult(appointment)
+        }
+    }
 }

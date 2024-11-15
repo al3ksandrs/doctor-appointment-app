@@ -147,7 +147,7 @@ fun AppointmentDetails(
                 // next step button
                 Button(
                     onClick = {
-                        navController.navigate("notification/$date/$time")
+                        navController.navigate("notification/$date/$time/$healthIssue/$isUrgent")
                     },
                     modifier = Modifier
                         .width(180.dp)

@@ -28,4 +28,9 @@ class AppointmentRepository(context: Context) {
     suspend fun deleteAppointmentById(appointmentID: Long) {
         appointmentDao.deleteAppointmentById(appointmentID)
     }
+
+    // get a appointment by its ID
+    suspend fun getAppointmentById(appointmentID: Long): Appointment? {
+        return appointmentDao.getAppointmentById(appointmentID)
+    }
 }

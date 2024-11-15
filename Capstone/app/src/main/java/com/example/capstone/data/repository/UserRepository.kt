@@ -27,6 +27,11 @@ class UserRepository(context: Context) {
         return userDao.getUserByUsername(username)
     }
 
+    // get userID by using their username
+    suspend fun getUserID(username: String): Long {
+        return userDao.getUserID(username)
+    }
+
     // validate user password
     suspend fun validateUser(username: String, password: String): User? {
         val user = userDao.getUserByUsername(username)

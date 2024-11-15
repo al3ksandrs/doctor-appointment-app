@@ -17,6 +17,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,9 +44,25 @@ import com.example.capstone.ui.theme.ContainerGray
 fun MyAppointments(
     navController: NavHostController,
     viewmodel: DACViewModel,
-    appointments: List<Appointment>,
     userViewmodel: UserViewmodel
 ) {
+    val username = userViewmodel.getLoggedInUsername()
+    var userID by remember { mutableStateOf<Long?>(null) }
+    var appointments by remember { mutableStateOf<List<Appointment>>(emptyList()) }
+
+    // get user ID and appointments
+    LaunchedEffect(username) {
+        userViewmodel.getUserID(username.toString()) { id ->
+            userID = id
+            // only get appointments if userID is valid
+            userID?.let { id ->
+                viewmodel.getAllAppointments(id) { result ->
+                    appointments = result
+                }
+            }
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -57,7 +78,19 @@ fun MyAppointments(
                 .padding(top = 5.dp),
         )
 
-        // appointment list NOTE TO SELF: CHANGE COLUMN TO LAZYCOLUMN WHEN DATA IS ADDED
+        // no appointments text
+        if(appointments.isEmpty()){
+            Text(
+                text = stringResource(id = R.string.no_appointments_found),
+                fontSize = 26.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(top = 60.dp),
+            )
+        }
+
+        // appointment list
         LazyColumn(
             modifier = Modifier
                 .align(Alignment.TopCenter)

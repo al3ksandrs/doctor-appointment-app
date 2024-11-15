@@ -32,18 +32,27 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.capstone.R
+import com.example.capstone.data.model.Appointment
+import com.example.capstone.data.utils.Utils
 import com.example.capstone.data.viewmodel.DACViewModel
+import com.example.capstone.data.viewmodel.UserViewmodel
 import com.example.capstone.ui.theme.ContainerGray
+import java.sql.Time
 import java.util.Calendar
+import java.util.Date
 
 @Composable
 fun Notification(
     navController: NavHostController,
-    viewmodel: DACViewModel,
+    viewModel: DACViewModel,
+    userViewmodel: UserViewmodel,
     date: String,
-    time: String
+    time: String,
+    healthIssue: String,
+    isUrgent: Boolean
 ) {
     var hours by remember { mutableStateOf(0) }
+    val username = userViewmodel.getLoggedInUsername()
 
     Box(
         modifier = Modifier
@@ -154,7 +163,32 @@ fun Notification(
             // finish appointment button
             Button(
                 onClick = {
-                    navController.navigate("myAppointments")
+                    if (username != null) {
+                        userViewmodel.getUserID(username) { userID ->
+                            if (userID != null) {
+                                // format date and time for use in Database
+                                val appointmentDate = Utils.dateFormatter.parse(date)
+                                val appointmentTime = Utils.timeFormatter.parse(time)?.let { Time(it.time) }
+
+                                val appointment = Appointment(
+                                    userID = userID,
+                                    date = appointmentDate!!,
+                                    time = appointmentTime!!,
+                                    location = "Utrecht Clinics",
+                                    doctor = "Dr. Pannings",
+                                    healthIssue = healthIssue,
+                                    voiceMemo = "",
+                                    isItUrgent = isUrgent
+                                )
+
+                                // insert appointment into database
+                                viewModel.insertAppointment(appointment)
+
+                                // navigate back to myAppointments when done
+                                navController.navigate("myAppointments")
+                            }
+                        }
+                    }
                 },
                 modifier = Modifier
                     .width(180.dp)

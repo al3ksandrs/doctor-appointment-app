@@ -31,6 +31,14 @@ class UserViewmodel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    // get userID by using their username
+    fun getUserID(username: String, onResult: (Long) -> Unit) {
+        mainScope.launch {
+            val userID = userRepository.getUserID(username)
+            onResult(userID)
+        }
+    }
+
     // logging in of an user (validation of username and password)
     fun validateUser(username: String, password: String, onResult: (User?) -> Unit) {
         mainScope.launch {
@@ -52,5 +60,10 @@ class UserViewmodel(application: Application) : AndroidViewModel(application) {
     // check if user is already logged in using sharedPreferences
     fun isUserLoggedIn(): Boolean {
         return sharedPreferences.getBoolean("IS_LOGGED_IN", false)
+    }
+
+    // get username from the current session
+    fun getLoggedInUsername(): String? {
+        return sharedPreferences.getString("USER_NAME", null)
     }
 }
