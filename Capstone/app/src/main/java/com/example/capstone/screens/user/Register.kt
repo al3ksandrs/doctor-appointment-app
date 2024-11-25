@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +37,7 @@ import com.example.capstone.data.model.User
 import com.example.capstone.data.viewmodel.DACViewModel
 import com.example.capstone.data.viewmodel.UserViewmodel
 import com.example.capstone.ui.theme.ContainerGray
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,10 +46,14 @@ fun Register(
     viewmodel: DACViewModel,
     userViewmodel: UserViewmodel
 ) {
-    var username by remember { mutableStateOf(TextFieldValue("")) }
-    var password by remember { mutableStateOf(TextFieldValue("")) }
-    var email by remember { mutableStateOf(TextFieldValue("")) }
-    var phoneNumber by remember { mutableStateOf(TextFieldValue("")) }
+    // Create a CoroutineScope for launching coroutines in Composable functions, here we use it for the register with Firebase
+    val coroutineScope = rememberCoroutineScope()
+
+    var username by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -172,22 +178,37 @@ fun Register(
         // register button
         Button(
             onClick = {
-                // create a User object
-                val newUser = User(
-                    username = username.text,
-                    password = password.text,
-                    email = email.text,
-                    phoneNumber = phoneNumber.text
-                )
+//                // Local room register
+//                // create a User object
+//                val newUser = User(
+//                    username = username,
+//                    password = password,
+//                    email = email,
+//                    phoneNumber = phoneNumber
+//                )
+//
+//                // save the User object into the database through the viewmodel
+//                userViewmodel.insertUser(newUser)
+//
+//                // save login state after registering
+//                userViewmodel.saveLoginState(true, username)
+//
+//                // navigate to myAppointments after registration
+//                navController.navigate("myAppointments")
 
-                // save the User object into the database through the viewmodel
-                userViewmodel.insertUser(newUser)
-
-                // save login state after registering
-                userViewmodel.saveLoginState(true, username.text)
-
-                // navigate to myAppointments after registration
-                navController.navigate("myAppointments")
+                // Registering of an user through Firebase, has to pass validation checks first
+                if (email.isNotEmpty() && password.isNotEmpty()) {
+                    coroutineScope.launch {
+                        try {
+                            userViewmodel.signUpWithEmailAndPassword(email, password)
+                            navController.navigate("myAppointments")
+                        } catch (e: Exception) {
+                            errorMessage = e.message ?: "An unknown error occurred, please try again later."
+                        }
+                    }
+                } else {
+                    errorMessage = "Please fill in all required fields."
+                }
             },
             modifier = Modifier
                 .width(180.dp)

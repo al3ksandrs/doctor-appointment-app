@@ -50,20 +50,36 @@ fun MyAppointments(
     var userID by remember { mutableStateOf<Long?>(null) }
     var appointments by remember { mutableStateOf<List<Appointment>>(emptyList()) }
 
+//    // Local version
+//    // get user ID and appointments
+//    LaunchedEffect(username) {
+//        userViewmodel.getUserID(username.toString()) { id ->
+//            if (id != null) {
+//                userID = id
+//                // only get appointments if userID is valid
+//                viewmodel.getAllAppointments(id) { result ->
+//                    appointments = result
+//                }
+//            } else {
+//                // navigate back to login screen if theres a null userID (and clear backstack)
+//                navController.navigate("login") {
+//                    popUpTo("myAppointments") { inclusive = true }
+//                }
+//            }
+//        }
+//    }
+
+    // Firebase version
     // get user ID and appointments
-    LaunchedEffect(username) {
-        userViewmodel.getUserID(username.toString()) { id ->
-            if (id != null) {
-                userID = id
-                // only get appointments if userID is valid
-                viewmodel.getAllAppointments(id) { result ->
-                    appointments = result
-                }
-            } else {
-                // navigate back to login screen if theres a null userID (and clear backstack)
-                navController.navigate("login") {
-                    popUpTo("myAppointments") { inclusive = true }
-                }
+    LaunchedEffect(Unit) {
+        val currentUser = userViewmodel.getCurrentUser()
+        if (currentUser != null) {
+            userID = currentUser.uid.toLongOrNull()
+            // TODO: appointments by the user's ID
+        } else {
+            // navigate back to login screen if theres a null userID (and clear backstack)
+            navController.navigate("login") {
+                popUpTo("myAppointments") { inclusive = true }
             }
         }
     }

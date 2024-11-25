@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,6 +41,7 @@ import androidx.navigation.NavHostController
 import com.example.capstone.R
 import com.example.capstone.data.viewmodel.DACViewModel
 import com.example.capstone.data.viewmodel.UserViewmodel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,8 +58,11 @@ fun Login(
     // get current context
     val context = LocalContext.current
 
-    var username by remember { mutableStateOf(TextFieldValue("")) }
-    var password by remember { mutableStateOf(TextFieldValue("")) }
+    // Create a CoroutineScope for launching coroutines in Composable functions, here we use it for the login with Firebase
+    val coroutineScope = rememberCoroutineScope()
+
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
     // screen content
     Box(modifier = Modifier.fillMaxSize()) {
@@ -78,11 +83,11 @@ fun Login(
 
             TextField(
                 modifier = Modifier.width(250.dp),
-                value = username,
+                value = email,
                 onValueChange = {
-                    username = it
+                    email = it
                 },
-                label = { Text(stringResource(id = R.string.username), color = Color.Black) },
+                label = { Text(stringResource(id = R.string.email), color = Color.Black) },
                 placeholder = { Text(text = "") },
                 colors = TextFieldDefaults.textFieldColors(
                     // underline removal
@@ -119,14 +124,25 @@ fun Login(
 
             Button(
                 onClick = {
-                    // check if combination of username and password is correct
-                    userViewmodel.validateUser(username.text, password.text) { user ->
-                        if (user != null) {
-                            // save login state
-                            userViewmodel.saveLoginState(true, username.text)
+//                    // Local room login
+//                    // check if combination of username and password is correct
+//                    userViewmodel.validateUser(username.text, password.text) { user ->
+//                        if (user != null) {
+//                            // save login state
+//                            userViewmodel.saveLoginState(true, username.text)
+//                            navController.navigate("myAppointments")
+//                        } else {
+//                            Toast.makeText(context, R.string.login_error, Toast.LENGTH_SHORT).show()
+//                        }
+//                    }
+
+                    // Log in of user through Firebase
+                    coroutineScope.launch{
+                        try {
+                            userViewmodel.logInWithEmailAndPassword(email, password)
                             navController.navigate("myAppointments")
-                        } else {
-                            Toast.makeText(context, R.string.login_error, Toast.LENGTH_SHORT).show()
+                        } catch (e: Exception){
+                            println(e.message)
                         }
                     }
                 },

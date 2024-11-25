@@ -68,6 +68,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.room.common)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.firebase.auth.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -97,4 +98,7 @@ dependencies {
 
     // Firebase analytics
     implementation("com.google.firebase:firebase-analytics")
+
+    // Firebase authentication
+    implementation ("com.google.firebase:firebase-auth:22.1.1")
 }
