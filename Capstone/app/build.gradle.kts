@@ -1,5 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
+
+    // Google services for Firebase
+    id("com.google.gms.google-services")
     alias(libs.plugins.org.jetbrains.kotlin.android)
 
     alias(libs.plugins.compose.compiler)
@@ -82,4 +85,16 @@ dependencies {
 
     // jbcrypt for hashing of passwords
     implementation ("org.mindrot:jbcrypt:0.4")
+
+    // retrofit and gson for API calls to azure
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+    implementation (libs.okhttp)
+    implementation (libs.logging.interceptor)
+
+    // Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+
+    // Firebase analytics
+    implementation("com.google.firebase:firebase-analytics")
 }

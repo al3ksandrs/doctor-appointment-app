@@ -3,4 +3,7 @@ plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.org.jetbrains.kotlin.android) apply false
     alias(libs.plugins.compose.compiler) apply false
+
+    // Google services for Firebase
+    id("com.google.gms.google-services") version "4.4.2" apply false
 }
