@@ -21,7 +21,7 @@ class DACViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     // get all appointments for a user by their userID
-    fun getAllAppointments(userID: Long, onResult: (List<Appointment>) -> Unit) {
+    fun getAllAppointments(userID: String, onResult: (List<Appointment>) -> Unit) {
         mainScope.launch(Dispatchers.IO) {
             val appointments = appointmentRepository.getAllAppointments(userID)
             // return list of all the user's appointments

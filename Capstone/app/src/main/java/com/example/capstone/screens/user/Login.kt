@@ -55,8 +55,8 @@ fun Login(
         navController.navigate("myAppointments")
     }
 
-    // get current context
-    val context = LocalContext.current
+//    // get current context
+//    val context = LocalContext.current
 
     // Create a CoroutineScope for launching coroutines in Composable functions, here we use it for the login with Firebase
     val coroutineScope = rememberCoroutineScope()

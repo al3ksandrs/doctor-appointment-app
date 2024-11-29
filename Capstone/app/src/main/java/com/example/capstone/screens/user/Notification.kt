@@ -59,7 +59,7 @@ fun Notification(
 ) {
     val context = navController.context
     var hours by remember { mutableStateOf(0) }
-    val username = userViewmodel.getLoggedInUsername()
+    val userID = userViewmodel.getCurrentUser()?.uid
 
     // create notification channel
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -181,39 +181,36 @@ fun Notification(
             // finish appointment button
             Button(
                 onClick = {
-                    if (username != null) {
-                        userViewmodel.getUserID(username) { userID ->
-                            if (userID != null) {
-                                // format date and time for use in Database
-                                val appointmentDate = Utils.dateFormatter.parse(date)
-                                val appointmentTime = Utils.timeFormatter.parse(time)?.let { Time(it.time) }
+                    if (userID != null) {
+                        // format date and time for use in Database
+                        val appointmentDate = Utils.dateFormatter.parse(date)
+                        val appointmentTime = Utils.timeFormatter.parse(time)?.let { Time(it.time) }
 
-                                val appointment = Appointment(
-                                    userID = userID,
-                                    date = appointmentDate!!,
-                                    time = appointmentTime!!,
-                                    location = "Utrecht Clinics",
-                                    doctor = "Dr. Pannings",
-                                    healthIssue = healthIssue,
-                                    voiceMemo = "",
-                                    isItUrgent = isUrgent
-                                )
+                        val appointment = Appointment(
+                            userID = userID,
+                            date = appointmentDate!!,
+                            time = appointmentTime!!,
+                            location = "Utrecht Clinics",
+                            doctor = "Dr. Pannings",
+                            healthIssue = healthIssue,
+                            voiceMemo = "",
+                            isItUrgent = isUrgent
+                        )
 
-                                // insert appointment into database
-                                viewModel.insertAppointment(appointment)
+                        // insert appointment into database
+                        viewModel.insertAppointment(appointment)
 
-                                // schedule notification
-                                val notificationTime = calculateNotificationTime(date, time, hours)
-                                scheduleNotification(context, notificationTime, hours)
+                        // schedule notification
+                        val notificationTime = calculateNotificationTime(date, time, hours)
+                        scheduleNotification(context, notificationTime, hours)
 
 //                                // NOTIFICATION DEBUG
 //                                val date = Date(notificationTime)
 //                                Log.d("notification time:", date.toString())
 
-                                // navigate back to myAppointments when done
-                                navController.navigate("myAppointments")
-                            }
-                        }
+                        // navigate back to myAppointments when done
+                        navController.navigate("myAppointments")
+
                     }
                 },
                 modifier = Modifier
@@ -256,7 +253,8 @@ fun calculateNotificationTime(date: String, time: String, hoursBefore: Int): Lon
 
 // schedule a notification with the calculated time above
 fun scheduleNotification(context: Context, reminderTime: Long, hours: Int) {
-    val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    val notificationManager =
+        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     val notification = NotificationCompat.Builder(context, "appointment_reminder_channel")
         .setContentTitle("Doctor's appointment reminder")

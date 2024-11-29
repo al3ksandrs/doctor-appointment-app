@@ -1,5 +1,6 @@
 package com.example.capstone.screens.user
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,8 +47,8 @@ fun MyAppointments(
     viewmodel: DACViewModel,
     userViewmodel: UserViewmodel
 ) {
-    val username = userViewmodel.getLoggedInUsername()
-    var userID by remember { mutableStateOf<Long?>(null) }
+//    val username = userViewmodel.getLoggedInUsername()
+    var userID by remember { mutableStateOf("") }
     var appointments by remember { mutableStateOf<List<Appointment>>(emptyList()) }
 
 //    // Local version
@@ -73,9 +74,22 @@ fun MyAppointments(
     // get user ID and appointments
     LaunchedEffect(Unit) {
         val currentUser = userViewmodel.getCurrentUser()
+        Log.d("USER", currentUser.toString())
         if (currentUser != null) {
-            userID = currentUser.uid.toLongOrNull()
+            userID = currentUser.uid
             // TODO: appointments by the user's ID
+
+            Log.d("USERID", userID.toString())
+            if (userID != null) {
+                viewmodel.getAllAppointments(userID) { result ->
+                    appointments = result
+                }
+            } else {
+                // UID is invalid; navigate back to the login screen
+                navController.navigate("login") {
+                    popUpTo("myAppointments") { inclusive = true }
+                }
+            }
         } else {
             // navigate back to login screen if theres a null userID (and clear backstack)
             navController.navigate("login") {

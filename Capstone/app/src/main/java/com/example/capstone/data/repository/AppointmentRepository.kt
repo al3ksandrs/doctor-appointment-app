@@ -20,7 +20,7 @@ class AppointmentRepository(context: Context) {
     }
 
     // get all appointments for a user by userID
-    suspend fun getAllAppointments(userID: Long): List<Appointment> {
+    suspend fun getAllAppointments(userID: String): List<Appointment> {
         return appointmentDao.getAllAppointments(userID)
     }
 
